@@ -1647,6 +1647,9 @@ class OpenAIServerModel(ApiModel):
             ),
         )
 
+    def chat(self, messages: list[dict[str, str | list[dict]] | ChatMessage]) -> ChatMessage:
+        return self.client.chat.completions.create(model=self.model_id, messages=messages)
+
 
 OpenAIModel = OpenAIServerModel
 
