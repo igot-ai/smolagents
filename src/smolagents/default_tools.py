@@ -37,11 +37,11 @@ class PreTool:
 
 class PythonInterpreterTool(Tool):
     name = "python_interpreter"
-    description = "This is a tool that evaluates python code. It can be used to perform calculations."
+    description = "Đây là một công cụ đánh giá mã python. Nó có thể được sử dụng để thực hiện các phép tính."
     inputs = {
         "code": {
             "type": "string",
-            "description": "The python code to run in interpreter",
+            "description": "Mã python để chạy trong trình thông dịch",
         }
     }
     output_type = "string"
@@ -55,8 +55,8 @@ class PythonInterpreterTool(Tool):
             "code": {
                 "type": "string",
                 "description": (
-                    "The code snippet to evaluate. All variables used in this snippet must be defined in this same snippet, "
-                    f"else you will get an error. This code can only import the following python libraries: {self.authorized_imports}."
+                    "Đoạn mã để đánh giá. Tất cả các biến được sử dụng trong đoạn mã này phải được định nghĩa trong cùng đoạn mã này, "
+                    f"nếu không bạn sẽ gặp lỗi. Mã này chỉ có thể import các thư viện python sau: {self.authorized_imports}."
                 ),
             }
         }
@@ -79,8 +79,8 @@ class PythonInterpreterTool(Tool):
 
 class FinalAnswerTool(Tool):
     name = "final_answer"
-    description = "Provides a final answer to the given problem."
-    inputs = {"answer": {"type": "any", "description": "The final answer to the problem"}}
+    description = "Cung cấp câu trả lời cuối cùng cho vấn đề đã cho."
+    inputs = {"answer": {"type": "any", "description": "Câu trả lời cuối cùng cho vấn đề"}}
     output_type = "any"
 
     def forward(self, answer: Any) -> Any:
@@ -89,8 +89,8 @@ class FinalAnswerTool(Tool):
 
 class UserInputTool(Tool):
     name = "user_input"
-    description = "Asks for user's input on a specific question"
-    inputs = {"question": {"type": "string", "description": "The question to ask the user"}}
+    description = "Yêu cầu nhập liệu từ người dùng về một câu hỏi cụ thể"
+    inputs = {"question": {"type": "string", "description": "Câu hỏi để hỏi người dùng"}}
     output_type = "string"
 
     def forward(self, question):
@@ -116,8 +116,8 @@ class DuckDuckGoSearchTool(Tool):
     """
 
     name = "web_search"
-    description = """Performs a duckduckgo web search based on your query (think a Google search) then returns the top search results."""
-    inputs = {"query": {"type": "string", "description": "The search query to perform."}}
+    description = """Thực hiện tìm kiếm web duckduckgo dựa trên truy vấn của bạn (như tìm kiếm Google) sau đó trả về các kết quả tìm kiếm hàng đầu."""
+    inputs = {"query": {"type": "string", "description": "Truy vấn tìm kiếm để thực hiện."}}
     output_type = "string"
 
     def __init__(self, max_results: int = 10, rate_limit: float | None = 1.0, **kwargs):
@@ -158,12 +158,12 @@ class DuckDuckGoSearchTool(Tool):
 
 class GoogleSearchTool(Tool):
     name = "web_search"
-    description = """Performs a google web search for your query then returns a string of the top search results."""
+    description = """Thực hiện tìm kiếm web google cho truy vấn của bạn sau đó trả về một chuỗi các kết quả tìm kiếm hàng đầu."""
     inputs = {
-        "query": {"type": "string", "description": "The search query to perform."},
+        "query": {"type": "string", "description": "Truy vấn tìm kiếm để thực hiện."},
         "filter_year": {
             "type": "integer",
-            "description": "Optionally restrict results to a certain year",
+            "description": "Tùy chọn hạn chế kết quả theo một năm nhất định",
             "nullable": True,
         },
     }
@@ -268,8 +268,8 @@ class ApiWebSearchTool(Tool):
     """
 
     name = "web_search"
-    description = "Performs a web search for a query and returns a string of the top search results formatted as markdown with titles, URLs, and descriptions."
-    inputs = {"query": {"type": "string", "description": "The search query to perform."}}
+    description = "Thực hiện tìm kiếm web cho một truy vấn và trả về một chuỗi các kết quả tìm kiếm hàng đầu được định dạng dưới dạng markdown với tiêu đề, URL và mô tả."
+    inputs = {"query": {"type": "string", "description": "Truy vấn tìm kiếm để thực hiện."}}
     output_type = "string"
 
     def __init__(
@@ -338,8 +338,8 @@ class ApiWebSearchTool(Tool):
 
 class WebSearchTool(Tool):
     name = "web_search"
-    description = "Performs a web search for a query and returns a string of the top search results formatted as markdown with titles, links, and descriptions."
-    inputs = {"query": {"type": "string", "description": "The search query to perform."}}
+    description = "Thực hiện tìm kiếm web cho một truy vấn và trả về một chuỗi các kết quả tìm kiếm hàng đầu được định dạng dưới dạng markdown với tiêu đề, liên kết và mô tả."
+    inputs = {"query": {"type": "string", "description": "Truy vấn tìm kiếm để thực hiện."}}
     output_type = "string"
 
     def __init__(self, max_results: int = 10, engine: str = "duckduckgo"):
@@ -451,12 +451,12 @@ class WebSearchTool(Tool):
 class VisitWebpageTool(Tool):
     name = "visit_webpage"
     description = (
-        "Visits a webpage at the given url and reads its content as a markdown string. Use this to browse webpages."
+        "Truy cập một trang web tại url đã cho và đọc nội dung của nó dưới dạng chuỗi markdown. Sử dụng điều này để duyệt các trang web."
     )
     inputs = {
         "url": {
             "type": "string",
-            "description": "The url of the webpage to visit.",
+            "description": "Url của trang web cần truy cập.",
         }
     }
     output_type = "string"
@@ -537,11 +537,11 @@ class WikipediaSearchTool(Tool):
     """
 
     name = "wikipedia_search"
-    description = "Searches Wikipedia and returns a summary or full text of the given topic, along with the page URL."
+    description = "Tìm kiếm Wikipedia và trả về tóm tắt hoặc toàn văn của chủ đề đã cho, cùng với URL trang."
     inputs = {
         "query": {
             "type": "string",
-            "description": "The topic to search on Wikipedia.",
+            "description": "Chủ đề để tìm kiếm trên Wikipedia.",
         }
     }
     output_type = "string"
@@ -607,12 +607,12 @@ class WikipediaSearchTool(Tool):
 
 class SpeechToTextTool(PipelineTool):
     default_checkpoint = "openai/whisper-large-v3-turbo"
-    description = "This is a tool that transcribes an audio into text. It returns the transcribed text."
+    description = "Đây là một công cụ chuyển đổi âm thanh thành văn bản. Nó trả về văn bản được phiên âm."
     name = "transcriber"
     inputs = {
         "audio": {
             "type": "audio",
-            "description": "The audio to transcribe. Can be a local path, an url, or a tensor.",
+            "description": "Âm thanh cần phiên âm. Có thể là đường dẫn cục bộ, url hoặc tensor.",
         }
     }
     output_type = "string"
