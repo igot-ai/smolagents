@@ -588,9 +588,9 @@ class TestAgent:
             model=FakeCodeModelFunctionDef(),
             managed_agents=[managed_agent],
         )
-        assert "You can also give tasks to team members." not in managed_agent.system_prompt
+        assert "Bạn cũng có thể giao nhiệm vụ cho các thành viên trong nhóm." not in managed_agent.system_prompt
         assert "{{managed_agents_descriptions}}" not in managed_agent.system_prompt
-        assert "You can also give tasks to team members." in manager_agent.system_prompt
+        assert "Bạn cũng có thể giao nhiệm vụ cho các thành viên trong nhóm." in manager_agent.system_prompt
 
     def test_replay_shows_logs(self, agent_logger):
         agent = CodeAgent(
@@ -1820,10 +1820,10 @@ class TestCodeAgent:
         )
 
         result = agent("Test request")
-        expected_summary = "Here is the final answer from your managed agent 'test_agent':\nTest output"
+        expected_summary = "Đây là câu trả lời cuối cùng từ agent được quản lý 'test_agent' của bạn:\nTest output"
         if provide_run_summary:
             expected_summary += (
-                "\n\nFor more detail, find below a summary of this agent's work:\n"
+                "\n\nĐể biết thêm chi tiết, hãy xem bên dưới tóm tắt công việc của agent này:\n"
                 "<summary_of_work>\n\nTest summary\n---\n</summary_of_work>"
             )
         assert result == expected_summary
