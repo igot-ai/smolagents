@@ -440,7 +440,7 @@ class MultiStepAgent(ABC):
         if additional_args:
             self.state.update(additional_args)
             self.task += f"""
-You have been provided with these additional arguments, that you can access directly using the keys as variables:
+Bạn đã được cung cấp các đối số bổ sung này, bạn có thể truy cập trực tiếp bằng cách sử dụng các khóa như các biến:
 {str(additional_args)}."""
 
         self.memory.system_prompt = SystemPromptStep(system_prompt=self.system_prompt)
@@ -644,7 +644,7 @@ You have been provided with these additional arguments, that you can access dire
                     else (None, None)
                 )
             plan = textwrap.dedent(
-                f"""Here are the facts I know and the plan of action that I will follow to solve the task:\n```\n{plan_message_content}\n```"""
+                f"""Tôi đã biết các thông tin sau và kế hoạch hành động mà tôi sẽ thực hiện để giải quyết nhiệm vụ:\n```\n{plan_message_content}\n```"""
             )
         else:
             # Summary mode removes the system prompt and previous planning messages output by the model.

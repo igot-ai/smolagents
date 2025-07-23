@@ -15,50 +15,50 @@ from smolagents.cli import load_model
 
 
 github_request = """
-I'm trying to find how hard I have to work to get a repo in github.com/trending.
-Can you navigate to the profile for the top author of the top trending repo, and give me their total number of commits over the last year?
+Tôi muốn tìm hiểu công việc cần phải làm để có thể có một repo trong github.com/trending.
+Bạn có thể điều hướng đến trang cá nhân của tác giả top của repo trending nhất, và cho tôi biết tổng số lượng commit của họ trong năm qua không?
 """  # The agent is able to achieve this request only when powered by GPT-4o or Claude-3.5-sonnet.
 
 search_request = """
-Please navigate to https://en.wikipedia.org/wiki/Chicago and give me a sentence containing the word "1992" that mentions a construction accident.
+Hãy điều hướng đến trang https://en.wikipedia.org/wiki/Chicago và cho tôi biết một câu chứa từ "1992" nói về một vụ tai nạn xây dựng.
 """
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Run a web browser automation script with a specified model.")
+    parser = argparse.ArgumentParser(description="Chạy một script tự động hóa trình duyệt web với một mô hình đã chỉ định.")
     parser.add_argument(
         "prompt",
         type=str,
-        nargs="?",  # Makes it optional
+        nargs="?",
         default=search_request,
-        help="The prompt to run with the agent",
+        help="Yêu cầu để chạy với agent",
     )
     parser.add_argument(
         "--model-type",
         type=str,
         default="LiteLLMModel",
-        help="The model type to use (e.g., OpenAIServerModel, LiteLLMModel, TransformersModel, InferenceClientModel)",
+        help="Loại mô hình để sử dụng (ví dụ: OpenAIServerModel, LiteLLMModel, TransformersModel, InferenceClientModel)",
     )
     parser.add_argument(
         "--model-id",
         type=str,
         default="gpt-4o",
-        help="The model ID to use for the specified model type",
+        help="ID mô hình để sử dụng cho loại mô hình đã chỉ định",
     )
     parser.add_argument(
         "--provider",
         type=str,
-        help="The inference provider to use for the model",
+        help="Nhà cung cấp dự đoán để sử dụng cho mô hình",
     )
     parser.add_argument(
         "--api-base",
         type=str,
-        help="The API base to use for the model",
+        help="Cơ sở API để sử dụng cho mô hình",
     )
     parser.add_argument(
         "--api-key",
         type=str,
-        help="The API key to use for the model",
+        help="API key để sử dụng cho mô hình",
     )
     return parser.parse_args()
 
@@ -139,59 +139,59 @@ def initialize_agent(model):
 
 
 helium_instructions = """
-Use your web_search tool when you want to get Google search results.
-Then you can use helium to access websites. Don't use helium for Google search, only for navigating websites!
-Don't bother about the helium driver, it's already managed.
-We've already ran "from helium import *"
-Then you can go to pages!
+Sử dụng công cụ web_search của bạn khi bạn muốn nhận kết quả tìm kiếm Google.
+Sau đó bạn có thể sử dụng helium để truy cập các trang web. Đừng sử dụng helium cho tìm kiếm Google, chỉ dùng cho điều hướng trang web!
+Đừng lo lắng về trình điều khiển helium, nó đã được quản lý.
+Chúng tôi đã chạy "from helium import *"
+Sau đó bạn có thể đi tới các trang!
 <code>
 go_to('github.com/trending')
 </code>
 
-You can directly click clickable elements by inputting the text that appears on them.
+Bạn có thể trực tiếp nhấp vào các phần tử có thể nhấp bằng cách nhập văn bản xuất hiện trên chúng.
 <code>
 click("Top products")
 </code>
 
-If it's a link:
+Nếu đó là một liên kết:
 <code>
 click(Link("Top products"))
 </code>
 
-If you try to interact with an element and it's not found, you'll get a LookupError.
-In general stop your action after each button click to see what happens on your screenshot.
-Never try to login in a page.
+Nếu bạn cố gắng tương tác với một phần tử và nó không được tìm thấy, bạn sẽ gặp LookupError.
+Nói chung hãy dừng hành động của bạn sau mỗi lần nhấp nút để xem điều gì xảy ra trên ảnh chụp màn hình của bạn.
+Không bao giờ cố gắng đăng nhập vào một trang.
 
-To scroll up or down, use scroll_down or scroll_up with as an argument the number of pixels to scroll from.
+Để cuộn lên hoặc xuống, sử dụng scroll_down hoặc scroll_up với đối số là số pixel để cuộn.
 <code>
-scroll_down(num_pixels=1200) # This will scroll one viewport down
+scroll_down(num_pixels=1200) # Điều này sẽ cuộn xuống một khung nhìn
 </code>
 
-When you have pop-ups with a cross icon to close, don't try to click the close icon by finding its element or targeting an 'X' element (this most often fails).
-Just use your built-in tool `close_popups` to close them:
+Khi bạn có các cửa sổ bật lên với biểu tượng chữ thập để đóng, đừng cố gắng nhấp vào biểu tượng đóng bằng cách tìm phần tử của nó hoặc nhắm mục tiêu phần tử 'X' (điều này thường thất bại).
+Chỉ cần sử dụng công cụ tích hợp `close_popups` để đóng chúng:
 <code>
 close_popups()
 </code>
 
-You can use .exists() to check for the existence of an element. For example:
+Bạn có thể sử dụng .exists() để kiểm tra sự tồn tại của một phần tử. Ví dụ:
 <code>
 if Text('Accept cookies?').exists():
     click('I accept')
 </code>
 
-Proceed in several steps rather than trying to solve the task in one shot.
-And at the end, only when you have your answer, return your final answer.
+Tiến hành theo nhiều bước thay vì cố gắng giải quyết nhiệm vụ trong một lần.
+Và cuối cùng, chỉ khi bạn có câu trả lời, hãy trả về câu trả lời cuối cùng của bạn.
 <code>
-final_answer("YOUR_ANSWER_HERE")
+final_answer("CÂU_TRẢ_LỜI_CỦA_BẠN_Ở_ĐÂY")
 </code>
 
-If pages seem stuck on loading, you might have to wait, for instance `import time` and run `time.sleep(5.0)`. But don't overuse this!
-To list elements on page, DO NOT try code-based element searches like 'contributors = find_all(S("ol > li"))': just look at the latest screenshot you have and read it visually, or use your tool search_item_ctrl_f.
-Of course, you can act on buttons like a user would do when navigating.
-After each code blob you write, you will be automatically provided with an updated screenshot of the browser and the current browser url.
-But beware that the screenshot will only be taken at the end of the whole action, it won't see intermediate states.
-Don't kill the browser.
-When you have modals or cookie banners on screen, you should get rid of them before you can click anything else.
+Nếu các trang có vẻ bị kẹt khi tải, bạn có thể phải chờ, ví dụ `import time` và chạy `time.sleep(5.0)`. Nhưng đừng lạm dụng điều này!
+Để liệt kê các phần tử trên trang, ĐỪNG thử tìm kiếm phần tử dựa trên mã như 'contributors = find_all(S("ol > li"))': chỉ cần nhìn vào ảnh chụp màn hình mới nhất mà bạn có và đọc nó bằng mắt, hoặc sử dụng công cụ search_item_ctrl_f của bạn.
+Tất nhiên, bạn có thể hành động trên các nút như người dùng sẽ làm khi điều hướng.
+Sau mỗi khối mã bạn viết, bạn sẽ tự động được cung cấp ảnh chụp màn hình cập nhật của trình duyệt và url trình duyệt hiện tại.
+Nhưng hãy cẩn thận rằng ảnh chụp màn hình sẽ chỉ được chụp ở cuối toàn bộ hành động, nó sẽ không thấy các trạng thái trung gian.
+Đừng tắt trình duyệt.
+Khi bạn có các cửa sổ modal hoặc banner cookie trên màn hình, bạn nên loại bỏ chúng trước khi có thể nhấp vào bất cứ thứ gì khác.
 """
 
 

@@ -27,60 +27,60 @@ leopard_prompt = "How many seconds would it take for a leopard at full speed to 
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Run a CodeAgent with all specified parameters")
+    parser = argparse.ArgumentParser(description="Chạy CodeAgent với tất cả các tham số được chỉ định")
     parser.add_argument(
         "prompt",
         type=str,
         nargs="?",  # Makes it optional
         default=leopard_prompt,
-        help="The prompt to run with the agent",
+        help="Lời nhắc để chạy với agent",
     )
     parser.add_argument(
         "--model-type",
         type=str,
         default="InferenceClientModel",
-        help="The model type to use (e.g., InferenceClientModel, OpenAIServerModel, LiteLLMModel, TransformersModel)",
+        help="Loại mô hình cần sử dụng (ví dụ: InferenceClientModel, OpenAIServerModel, LiteLLMModel, TransformersModel)",
     )
     parser.add_argument(
         "--model-id",
         type=str,
         default="Qwen/Qwen2.5-Coder-32B-Instruct",
-        help="The model ID to use for the specified model type",
+        help="ID mô hình cần sử dụng cho loại mô hình đã chỉ định",
     )
     parser.add_argument(
         "--imports",
         nargs="*",  # accepts zero or more arguments
         default=[],
-        help="Space-separated list of imports to authorize (e.g., 'numpy pandas')",
+        help="Danh sách các imports được ủy quyền, phân cách bằng dấu cách (ví dụ: 'numpy pandas')",
     )
     parser.add_argument(
         "--tools",
         nargs="*",
         default=["web_search"],
-        help="Space-separated list of tools that the agent can use (e.g., 'tool1 tool2 tool3')",
+        help="Danh sách các công cụ mà agent có thể sử dụng, phân cách bằng dấu cách (ví dụ: 'tool1 tool2 tool3')",
     )
     parser.add_argument(
         "--verbosity-level",
         type=int,
         default=1,
-        help="The verbosity level, as an int in [0, 1, 2].",
+        help="Mức độ chi tiết, dưới dạng số nguyên trong [0, 1, 2].",
     )
-    group = parser.add_argument_group("api options", "Options for API-based model types")
+    group = parser.add_argument_group("tùy chọn api", "Tùy chọn cho các loại mô hình dựa trên API")
     group.add_argument(
         "--provider",
         type=str,
         default=None,
-        help="The inference provider to use for the model",
+        help="Nhà cung cấp suy luận cần sử dụng cho mô hình",
     )
     group.add_argument(
         "--api-base",
         type=str,
-        help="The base URL for the model",
+        help="URL cơ sở cho mô hình",
     )
     group.add_argument(
         "--api-key",
         type=str,
-        help="The API key for the model",
+        help="Khóa API cho mô hình",
     )
     return parser.parse_args()
 

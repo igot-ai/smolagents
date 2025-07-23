@@ -94,7 +94,7 @@ class UserInputTool(Tool):
     output_type = "string"
 
     def forward(self, question):
-        user_input = input(f"{question} => Type your answer here:")
+        user_input = input(f"{question} => Nhập câu trả lời của bạn ở đây:")
         return user_input
 
 
