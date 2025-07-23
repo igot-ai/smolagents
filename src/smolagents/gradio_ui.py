@@ -90,8 +90,19 @@ def _process_action_step(step_log: ActionStep, skip_model_outputs: bool = False)
     """
     import gradio as gr
 
+    # Check if this is an incomplete ActionStep (step just started)
+    is_step_started = (
+        step_log.timing.end_time is None and
+        step_log.model_output_message is None and
+        step_log.tool_calls is None
+    )
+    
+    # If this is just a "step started" event, only show minimal info
+    if is_step_started:
+        return
+
     # Output the step number
-    step_number = f"**Bước {step_log.step_number}**"
+    step_number = f"**Step {step_log.step_number}**"
     if not skip_model_outputs:
         yield gr.ChatMessage(role=MessageRole.ASSISTANT, content=f"**{step_number}**", metadata={"status": "done"})
 
@@ -121,7 +132,7 @@ def _process_action_step(step_log: ActionStep, skip_model_outputs: bool = False)
             role=MessageRole.ASSISTANT,
             content=content,
             metadata={
-                "title": f"🛠️ Đã sử dụng công cụ {first_tool_call.name}",
+                "title": f"🛠️ Used tool {first_tool_call.name}",
                 "status": "done",
             },
         )
@@ -176,11 +187,11 @@ def _process_planning_step(step_log: PlanningStep, skip_model_outputs: bool = Fa
     import gradio as gr
 
     if not skip_model_outputs:
-        yield gr.ChatMessage(role=MessageRole.ASSISTANT, content="**Bước lập kế hoạch**", metadata={"status": "done"})
+        yield gr.ChatMessage(role=MessageRole.ASSISTANT, content="**Planning step**", metadata={"status": "done"})
         yield gr.ChatMessage(role=MessageRole.ASSISTANT, content=step_log.plan, metadata={"status": "done"})
     yield gr.ChatMessage(
         role=MessageRole.ASSISTANT,
-        content=get_step_footnote_content(step_log, "Bước lập kế hoạch"),
+        content=get_step_footnote_content(step_log, "Planning step"),
         metadata={"status": "done"},
     )
     yield gr.ChatMessage(role=MessageRole.ASSISTANT, content="-----", metadata={"status": "done"})
@@ -219,7 +230,7 @@ def _process_final_answer_step(step_log: FinalAnswerStep) -> Generator:
         )
     else:
         yield gr.ChatMessage(
-            role=MessageRole.ASSISTANT, content=f"**Câu trả lời cuối cùng:** {str(final_answer)}", metadata={"status": "done"}
+            role=MessageRole.ASSISTANT, content=f"**Final answer:** {str(final_answer)}", metadata={"status": "done"}
         )
 
 

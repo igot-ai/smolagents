@@ -540,6 +540,10 @@ Bạn đã được cung cấp các đối số bổ sung này, bạn có thể 
                 timing=Timing(start_time=action_step_start_time),
                 observations_images=images,
             )
+            
+            # Yield event before step execution starts (stream only)
+            yield action_step
+            
             self.logger.log_rule(f"Step {self.step_number}", level=LogLevel.INFO)
             try:
                 for output in self._step_stream(action_step):
@@ -860,7 +864,7 @@ Bạn đã được cung cấp các đối số bổ sung này, bạn có thể 
             self.prompt_templates["managed_agent"]["report"], variables=dict(name=self.name, final_answer=report)
         )
         if self.provide_run_summary:
-            answer += "\n\nFor more detail, find below a summary of this agent's work:\n<summary_of_work>\n"
+            answer += "\n\nĐể biết thêm chi tiết, hãy xem bên dưới tóm tắt công việc của agent này:\n<summary_of_work>\n"
             for message in self.write_memory_to_messages(summary_mode=True):
                 content = message.content
                 answer += "\n" + truncate_content(str(content)) + "\n---"
