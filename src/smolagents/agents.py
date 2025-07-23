@@ -1101,7 +1101,7 @@ Bạn đã được cung cấp các đối số bổ sung này, bạn có thể 
         """
         # Load agent.json
         folder = Path(folder)
-        agent_dict = json.loads((folder / "agent.json").read_text())
+        agent_dict = json.loads((folder / "agent.json").read_text(encoding="utf-8"))
 
         # Load managed agents from their respective folders, recursively
         managed_agents = []
@@ -1113,7 +1113,7 @@ Bạn đã được cung cấp các đối số bổ sung này, bạn có thể 
         # Load tools
         tools = []
         for tool_name in agent_dict["tools"]:
-            tool_code = (folder / "tools" / f"{tool_name}.py").read_text()
+            tool_code = (folder / "tools" / f"{tool_name}.py").read_text(encoding="utf-8")
             tools.append({"name": tool_name, "code": tool_code})
         agent_dict["tools"] = tools
 
@@ -1205,7 +1205,7 @@ class ToolCallingAgent(MultiStepAgent):
         **kwargs,
     ):
         prompt_templates = prompt_templates or yaml.safe_load(
-            importlib.resources.files("smolagents.prompts").joinpath("toolcalling_agent.yaml").read_text()
+            importlib.resources.files("smolagents.prompts").joinpath("toolcalling_agent.yaml").read_text(encoding="utf-8")
         )
         super().__init__(
             tools=tools,
@@ -1514,11 +1514,11 @@ class CodeAgent(MultiStepAgent):
         self._use_structured_outputs_internally = use_structured_outputs_internally
         if use_structured_outputs_internally:
             prompt_templates = prompt_templates or yaml.safe_load(
-                importlib.resources.files("smolagents.prompts").joinpath("structured_code_agent.yaml").read_text()
+                importlib.resources.files("smolagents.prompts").joinpath("structured_code_agent.yaml").read_text(encoding="utf-8")
             )
         else:
             prompt_templates = prompt_templates or yaml.safe_load(
-                importlib.resources.files("smolagents.prompts").joinpath("code_agent.yaml").read_text()
+                importlib.resources.files("smolagents.prompts").joinpath("code_agent.yaml").read_text(encoding="utf-8")
             )
         if grammar and use_structured_outputs_internally:
             raise ValueError("You cannot use 'grammar' and 'use_structured_outputs_internally' at the same time.")
